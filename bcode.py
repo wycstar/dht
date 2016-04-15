@@ -55,7 +55,7 @@ DECODE_FUNC = {
 }
 
 
-def decode(code):
+def bdecode(code):
     result, index = DECODE_FUNC[code[0]](code, 0)
     return result
 
@@ -111,7 +111,7 @@ ENCODE_FUNC = {
 }
 
 
-def encode(code):
+def bencode(code):
     lResult = []
     ENCODE_FUNC[wtypes(code)](code, lResult)
     return ''.join(lResult)
@@ -125,5 +125,5 @@ if __name__ == '__main__':
         },
         "g": 456
     }
-    print(encode(code))
-    print(decode('d1:a1:b1:cl1:di123ee1:fd1:a1:qe1:gi456ee'))
+    print(bencode(code))
+    print(bdecode('d1:a1:b1:cl1:di123ee1:fd1:a1:qe1:gi456ee'))

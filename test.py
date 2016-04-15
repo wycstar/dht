@@ -5,6 +5,7 @@
 def test():
     b = "abcdvfgbfg"
     print(isinstance(b, dict))
+    print("abcdvfgbfg")
 
 
 if __name__ == '__main__':
