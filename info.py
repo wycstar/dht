@@ -29,7 +29,7 @@ def getInfo():
                     d['type'] = 'multi'
                     d['file_num'] = len(c['info']['files'])
                     d['file_info'] = [dict(file_size=x['length'],
-                                           file_name=sum(x['path'])) for x in c['info']['files']]
+                                           file_name='/'.join(x['path'])) for x in c['info']['files']]
                     d['size'] = sum([x['file_size'] for x in d['file_info']])
                 d['name'] = c['info']['name']
                 d['magnet'] = 'magnet:?xt=urn:btih:' + i.split('.')[0].lower()
@@ -63,10 +63,12 @@ if __name__ == '__main__':
     '''
     path = os.getcwd()
     sep = os.sep
-    file = '361C3B67F562F2E7F4D10EA22022D26BEDA88286.torrent'
+    # file = '361C3B67F562F2E7F4D10EA22022D26BEDA88286.torrent'
+    file = '56C39A1D2BD0962FCA8C3FAB4BE073F3A7BF1709.torrent'
     with open(path + sep + file, 'rb') as f:
         d = {}
         c = bdecode(f.read())
         for i in c['info']['files']:
-            print i
+            print '/'.join(i['path'])
+        # vprint('/'.join(c['info']['files']))
     '''
