@@ -5,6 +5,7 @@ import requests
 import json
 import libtorrent as lt
 import os
+from bcode import bdecode, bencode
 
 
 def import2json(path):
@@ -16,21 +17,39 @@ def import2json(path):
             d[line] += 1
         else:
             d[line] = 1
-    # for k, v in d.items():
-    #    print("%s %d" % (k, v))
-        # print(k v)
     return d
 
+
+def downloadFromXunlei():
+    baseUrl = 'http://bt.box.n0808.com/'
+    path = os.getcwd()
+    hashPath = path + '/test.txt'
+    extName = '.torrent'
+    sep = os.sep
+    torrNum = 0
+    for item in import2json(hashPath).keys():
+        item = item.upper()
+        r = requests.get(baseUrl +
+                         item[:2] + sep +
+                         item[-2:] + sep +
+                         item + extName)
+        if r.status_code == 200:
+            with open((path + sep + item + extName), 'wb') as f:
+                f.write(r.content)
+            torrNum += 1
+            print(torrNum)
+
+
+def getInfo():
+    path = os.getcwd()
+    sep = os.sep
+    torrentSet = [filename for filename in os.listdir(path) if filename.split('.')[-1] == 'torrent']
+    for i in torrentSet:
+        with open(path + sep + i, 'rb') as f:
+            c = bdecode(str(f.read())[2:-1])
+            print(c.keys())
+            # print(str(f.read())[2:-1])
+        break
+
 if __name__ == '__main__':
-    # print(os.getcwd() + '/test.txt')
-    # import2json(os.getcwd() + '/test.txt')
-    headers = {'content-type': 'multipart/form-data'}
-    payload = {
-        'auth': 'D5015A95E57B0183B10450210EA27E57',
-        'ac': 'download',
-        'hash': 'F4583D23C62DE4DDF75739DE2135589F7BBBF187'}
-    r = requests.post("http://www.torrent.org.cn/api.php",
-                      files=dict(auth='D5015A95E57B0183B10450210EA27E57',
-                                 ac='download',
-                                 hash='F4583D23C62DE4DDF75739DE2135589F7BBBF187'))
-    print(r.text)
+    getInfo()
